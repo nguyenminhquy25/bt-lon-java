@@ -1,9 +1,9 @@
+import java.util.Arrays;
+
 public class Point {
     private int[] coordinates = new int[3];
     public Point() {
-        this.setX(0);
-        this.setY(0);
-        this.setZ(0);
+        Arrays.fill(coordinates, 0);
     }
     public int getX() {
         return coordinates[0];
