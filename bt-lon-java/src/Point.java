@@ -1,31 +1,31 @@
 import java.util.Arrays;
 
 public class Point {
-    private int[] coordinates = new int[3];
+    private double[] coordinates = new double[3];
     public Point() {
         for(int i = 0; i < 3; i++) {
-            this.coordinates[i] = 0;
+            this.coordinates[i] = 0.00d;
         }
     }
-    public int getX() {
+    public double getX() {
         return this.coordinates[0];
     }
-    public void setX(int newX) {
+    public void setX(double newX) {
         this.coordinates[0] = newX;
     }
-    public int getY() {
+    public double getY() {
         return this.coordinates[1];
     }
-    public void setY(int newY) {
+    public void setY(double newY) {
         this.coordinates[1] = newY;
     }
-    public int getZ() {
+    public double getZ() {
         return this.coordinates[2];
     }
-    public void setZ(int newZ) {
+    public void setZ(double newZ) {
         this.coordinates[2] = newZ;
     }
     public static void main(String[] args) {
-
+        
     }
 }

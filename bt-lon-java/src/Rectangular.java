@@ -10,17 +10,25 @@ public class Rectangular {
     public void setPoints(String[] pointsInput) {
         for(int i = 0; i < pointsInput.length; i++) {
             if(i % 3 == 0) {
-                this.points[i / 3].setX(Integer.parseInt(pointsInput[i]));
+                this.points[i / 3].setX(Double.parseDouble(pointsInput[i]));
                 continue;
             }
             else if(i % 3 == 1) {
-                this.points[i / 3].setY(Integer.parseInt(pointsInput[i]));
+                this.points[i / 3].setY(Double.parseDouble(pointsInput[i]));
                 continue;
             }
-            this.points[i / 3].setZ(Integer.parseInt(pointsInput[i]));
+            this.points[i / 3].setZ(Double.parseDouble(pointsInput[i]));
         }
     }
     public boolean checkPoints() {
+        for(int i = 0; i < 7; i++) {
+            for(int j = i + 1; j < 8; j++) {
+                if(points[i].getX() == points[j].getX() && points[i].getY() == points[j].getY()
+                    && points[i].getZ() == points[j].getZ()) {
+                        return false;
+                }
+            }
+        }
         if(this.points[3].getX() != this.points[0].getX() || this.points[3].getZ() != this.points[0].getZ() ||
             this.points[7].getX() != this.points[4].getX() || this.points[7].getZ() != this.points[4].getZ()) {
                 return false;
