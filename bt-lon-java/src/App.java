@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class App {
     public static String[] handleInput(String str) {
@@ -13,6 +14,25 @@ public class App {
                 1 / (getRange(p1, p4) * getRange(p1, p4))));
     } 
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        String roomPoints = input.nextLine();
+        Room room = new Room();
+        room.setPoints(handleInput(roomPoints));
+        int numberObject = input.nextInt();
+        input.nextLine(); 
+        for(int i = 0; i < numberObject; i++) {
+            String objectPoints = input.nextLine();
+            Object object = new Object();
+            object.setPoints(handleInput(objectPoints));
+            room.addObject(object);
+        }
+        int numberCamera = input.nextInt();
+        input.nextLine();
+        for(int i = 0; i < numberCamera; i++) {
+            String cameraPoints = input.nextLine();
+            Camera camera = new Camera(handleInput(cameraPoints));
+            room.addCamera(camera);
+        }
         
     }
 }

@@ -7,6 +7,9 @@ public class Rectangular {
             this.points[i] = new Point();
         }
     }
+    public Point[] getPoints() {
+        return this.points;
+    }
     public void setPoints(String[] pointsInput) {
         for(int i = 0; i < pointsInput.length; i++) {
             if(i % 3 == 0) {
