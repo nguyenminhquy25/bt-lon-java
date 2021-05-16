@@ -1,22 +1,29 @@
 import java.util.Arrays;
 
 public class Rectangular {
-    private Point[] points = new Point[8];
+    public Point[] points = new Point[8];
     public Rectangular() {
-        Arrays.fill(points, new Point());
+        for(int i = 0; i < 8; i++) {
+        	points[i] = new Point();
+        }
     }
     public void setPoints(String[] pointsInput) {
         for(int i = 0; i < pointsInput.length; i++) {
             if(i % 3 == 0) {
-                this.points[i / 3].setX(Integer.parseInt(pointsInput[i]));
+                points[i/3].setX(Integer.parseInt(pointsInput[i]));
                 continue;
             }
             else if(i % 3 == 1) {
-                this.points[i / 3].setY(Integer.parseInt(pointsInput[i]));
+                points[i/3].setY(Integer.parseInt(pointsInput[i]));
                 continue;
             }
-            this.points[i / 3].setZ(Integer.parseInt(pointsInput[i]));
+            points[i/3].setZ(Integer.parseInt(pointsInput[i]));
         }
+        for(int i = 0; i< 8; i++) {
+            System.out.println(points[i].getX());
+            System.out.println(points[i].getY());
+            System.out.println(points[i].getZ());
+        	}
     }
     public boolean checkPoints() {
         if(this.points[3].getY() != this.points[0].getY() || this.points[3].getZ() != this.points[0].getZ() ||
@@ -49,9 +56,11 @@ public class Rectangular {
         return true;
     }
     public void printPoint() {
-        System.out.println(this.points[0].getX());
-        System.out.println(this.points[0].getY());
-        System.out.println(this.points[0].getZ());
+    	for(int i = 0; i< 8; i++) {
+        System.out.println(this.points[i].getX());
+        System.out.println(this.points[i].getY());
+        System.out.println(this.points[i].getZ());
+    	}
     }
     public static void main(String[] args) {
 
