@@ -19,6 +19,15 @@ public class Room extends Rectangular {
             objects.get(i).printObject();
         }
     }
+    public boolean checkObjectValid(Object object) {
+        for(int i = 0; i < 8; i++) {
+            if(this.getPoints()[i].getX() >= object.getPoints()[i].getX() || this.getPoints()[i].getY() >= object.getPoints()[i].getY()
+                || this.getPoints()[i].getZ() >= object.getPoints()[i].getZ()) {
+                    return false;
+                }
+        }
+        return true;
+    }
     public static void main(String[] args) {
 
     }

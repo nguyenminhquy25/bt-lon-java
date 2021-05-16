@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Rectangular {
     private Point[] points = new Point[8];
     public Rectangular() {
