@@ -36,7 +36,15 @@ public class Room extends Rectangular {
         if(!checkObjectInRoom(o)) {
             return false;
         }
-        return true;
+        if(o.getPoints()[0].getX() >= this.getPoints()[0].getX() && o.getPoints()[0].getX() <= this.getPoints()[1].getX() &&
+        o.getPoints()[0].getY() >= this.getPoints()[0].getY() && o.getPoints()[0].getY() >= this.getPoints()[3].getY() &&
+        o.getPoints()[0].getZ() == this.getPoints()[0].getZ()) {
+            return true;
+        }
+        // for(int i = 0; i < this.objects.size(); i++) { nam tren vat khac ?
+
+        // }
+        return false;
     }
     public static void main(String[] args) {
 

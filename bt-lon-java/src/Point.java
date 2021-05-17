@@ -22,7 +22,7 @@ public class Point {
     }
     public void setZ(double newZ) {
         this.coordinates[2] = newZ;
-    }
+    }    
     public void printPoint() { 
         System.out.println("Point X: " + this.coordinates[0] + " Y: " + this.coordinates[1] + " Z: " + this.coordinates[2]);
     }
