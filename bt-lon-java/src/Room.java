@@ -19,12 +19,22 @@ public class Room extends Rectangular {
             objects.get(i).printObject();
         }
     }
-    public boolean checkObjectValid(Object object) {
+    public boolean checkPointInRoom(Point point) {
+        return point.getX() >= this.getPoints()[0].getX() && point.getX() <= this.getPoints()[1].getX() && 
+            point.getY() >= this.getPoints()[0].getY() && point.getY() <= this.getPoints()[3].getY() &&
+            point.getZ() >= this.getPoints()[0].getZ() && point.getZ() <= this.getPoints()[4].getZ();
+    }
+    public boolean checkObjectInRoom(Object object) {
         for(int i = 0; i < 8; i++) {
-            if(this.getPoints()[i].getX() >= object.getPoints()[i].getX() || this.getPoints()[i].getY() >= object.getPoints()[i].getY()
-                || this.getPoints()[i].getZ() >= object.getPoints()[i].getZ()) {
-                    return false;
-                }
+            if(!checkPointInRoom(object.getPoints()[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean checkObjectValid(Object o) {
+        if(!checkObjectInRoom(o)) {
+            return false;
         }
         return true;
     }
