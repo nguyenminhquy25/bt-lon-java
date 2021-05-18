@@ -47,7 +47,7 @@ public class App {
                         String objectPoints = input.nextLine();
                         Object object = new Object();
                         object.setPoints(handleInput(objectPoints));
-                        if(room.checkObjectValid(object) == false || object.checkPoints() == false) { //
+                        if(room.checkObjectValid(object) == false || object.checkPoints() == false) { 
                             System.out.println("Object not valid");
                             input.close();
                             return;
