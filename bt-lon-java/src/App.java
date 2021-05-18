@@ -11,11 +11,11 @@ public class App {
     }
     public static void printMenu() {
         System.out.println("Menu: ");
-        System.out.println("1. Create new room");
-        System.out.println("2. Set up new camera");
+        System.out.println("1. Create a new room");
+        System.out.println("2. Set up a new camera");
         System.out.println("3. Calculate obscured area");
-        System.out.println("4. Show obscured area");
-        System.out.println("5. Minimum cameras need added");
+        System.out.println("4. Show upobscured area");
+        System.out.println("5. Determin minimum cameras are need to added");
         System.out.println("6. Determine cameras potition");
         System.out.println("0. Exit");
     }
@@ -36,7 +36,7 @@ public class App {
                     Room room = new Room();
                     room.setPoints(handleInput(roomPoints));
                     if(!room.checkPoints()) {
-                        System.out.println("Room not valid");
+                        System.out.println("Room is not valid");
                         input.close();
                         return;
                     }
@@ -48,7 +48,7 @@ public class App {
                         Object object = new Object();
                         object.setPoints(handleInput(objectPoints));
                         if(room.checkObjectValid(object) == false || object.checkPoints() == false) { 
-                            System.out.println("Object not valid");
+                            System.out.println("Object is not valid");
                             input.close();
                             return;
                         }
@@ -67,7 +67,13 @@ public class App {
                     for(int i = 0; i < numberCamera; i++) {
                         String cameraPoints = input.nextLine();
                         Camera camera = new Camera(handleInput(cameraPoints));
-                        app.getRooms().get(app.getRooms().size() - 1).addCamera(camera);
+                        Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
+                        if(!currentRoom.checkCameraValid(camera)) {
+                            System.out.println("Camera is not valid");
+                            input.close();
+                            return;
+                        }
+                        currentRoom.addCamera(camera);
                         System.out.println("New camera was added");
                     }
                     break;

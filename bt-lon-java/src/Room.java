@@ -92,6 +92,13 @@ public class Room extends Rectangular {
         }
         return false;
     }
+    public boolean checkCameraValid(Camera camera) {
+        return camera.getX() > this.getPoints()[0].getX() && camera.getX() < this.getPoints()[1].getX() &&
+        camera.getY() > this.getPoints()[0].getY() && camera.getY() < this.getPoints()[3].getY() &&
+        camera.getZ() > this.getPoints()[0].getZ() && camera.getZ() < this.getPoints()[4].getZ() 
+        || camera.getZ() == this.getPoints()[0].getZ()
+        ? false : true;
+    }
     public static void main(String[] args) {
 
     }
