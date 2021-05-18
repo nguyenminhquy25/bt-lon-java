@@ -36,14 +36,43 @@ public class Room extends Rectangular {
         if(!checkObjectInRoom(o)) {
             return false;
         }
-        if(o.getPoints()[0].getX() >= this.getPoints()[0].getX() && o.getPoints()[0].getX() <= this.getPoints()[1].getX() &&
-        o.getPoints()[0].getY() >= this.getPoints()[0].getY() && o.getPoints()[0].getY() >= this.getPoints()[3].getY() &&
-        o.getPoints()[0].getZ() == this.getPoints()[0].getZ()) {
+        if(Point.checkPointInRectangle(o.getPoints()[0], this.getPoints()[0], this.getPoints()[1], this.getPoints()[3])) {
             return true;
         }
-        // for(int i = 0; i < this.objects.size(); i++) { nam tren vat khac ?
-
-        // }
+        for(int i = 0; i < this.objects.size(); i++) { 
+            ArrayList<Integer> count = new ArrayList<Integer>();
+            if(Point.checkPointInRectangle(o.getPoints()[0], this.objects.get(i).getPoints()[4], this.objects.get(i).getPoints()[5],
+            this.objects.get(i).getPoints()[6])) {
+                count.add(0);
+            }
+            if(Point.checkPointInRectangle(o.getPoints()[1], this.objects.get(i).getPoints()[4], this.objects.get(i).getPoints()[5],
+            this.objects.get(i).getPoints()[6])) {
+                count.add(1);
+            }
+            if(Point.checkPointInRectangle(o.getPoints()[2], this.objects.get(i).getPoints()[4], this.objects.get(i).getPoints()[5],
+            this.objects.get(i).getPoints()[6])) {
+                count.add(2);
+            }
+            if(Point.checkPointInRectangle(o.getPoints()[3], this.objects.get(i).getPoints()[4], this.objects.get(i).getPoints()[5],
+            this.objects.get(i).getPoints()[6])) {
+                count.add(3);
+            }
+            switch(count.size()) {
+                case 1:
+                    if(o.getPoints()[count.get(0)].getX() > this.getPoints()[0].getX() && 
+                    o.getPoints()[count.get(0)].getX() < this.getPoints()[1].getX() &&
+                    o.getPoints()[count.get(0)].getY() > this.getPoints()[0].getY() &&
+                    o.getPoints()[count.get(0)].getY() < this.getPoints()[3].getX() &&
+                    o.getPoints()[count.get(0)].getZ() == this.getPoints()[0].getZ()) {
+                        return true;
+                    }
+                    return false;
+                case 2:
+                    
+                case 4:
+                    return true;
+            }
+        }
         return false;
     }
     public static void main(String[] args) {

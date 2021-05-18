@@ -47,7 +47,7 @@ public class App {
                         String objectPoints = input.nextLine();
                         Object object = new Object();
                         object.setPoints(handleInput(objectPoints));
-                        if(room.checkObjectValid(object) == false || object.checkPoints() == false) {
+                        if(room.checkObjectValid(object) == false || object.checkPoints() == false) { //
                             System.out.println("Object not valid");
                             input.close();
                             return;
@@ -72,12 +72,12 @@ public class App {
                     }
                     break;
                 case "3":
-                    // System.out.println(app.getRooms().size());
-                    // for(int i = 0; i < app.getRooms().size(); i++) {
-                    //     app.getRooms().get(i).printCameras();
-                    //     app.getRooms().get(i).printObjects();
-                    // }
-                    // break;
+                    System.out.println(app.getRooms().size());
+                    for(int i = 0; i < app.getRooms().size(); i++) {
+                        app.getRooms().get(i).printCameras();
+                        app.getRooms().get(i).printObjects();
+                    }
+                    break;
             }   
         }
     }
