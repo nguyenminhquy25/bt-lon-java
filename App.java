@@ -12,6 +12,7 @@ public class App extends JPanel {
 	protected ArrayList<Room> rooms = new ArrayList<>();
 	protected ArrayList<Color> colors = new ArrayList<>();
 	protected int i = -1;
+	protected int choice;
 
 	public App() {
 		colors.add(Color.blue);
@@ -37,6 +38,7 @@ public class App extends JPanel {
 		System.out.println("4. Show obscured area");
 		System.out.println("5. Minimum cameras need added");
 		System.out.println("6. Determine cameras potition");
+		System.out.println("7. Show object in room");
 		System.out.println("0. Exit");
 	}
 
@@ -47,11 +49,11 @@ public class App extends JPanel {
 		int room_x = (int) this.rooms.get(i).getMaxX();
 		int room_y = (int) this.rooms.get(i).getMaxY();
 		int room_z = (int) this.rooms.get(i).getMaxZ();
-		Scanner input = new Scanner(System.in);
+	
 		int n = 2;
 		int m = 0;
 
-		switch (n) {
+		switch (this.choice) {
 		case 0:
 			Graphics2D room = (Graphics2D) g;
 			room.setColor(Color.black);

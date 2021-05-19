@@ -72,7 +72,9 @@ public class drawRoom extends JFrame {
 					System.out.println("New camera was added");
 				}
 				break;
-			case "3":
+			case "7":
+				System.out.println("pick number from 0 to 2");
+				app.choice= input.nextInt();
 				drawRoom draw = new drawRoom(app);
 			}
 		}
