@@ -9,6 +9,9 @@ public class Room extends Rectangular {
     public void addObject(Object object) {
         this.objects.add(object);
     }
+    public ArrayList<Object> getObjects() {
+        return this.objects;
+    }
     public void printCameras() {
         for(int i = 0; i < cameras.size(); i++) {
             cameras.get(i).printCamera();
@@ -92,11 +95,30 @@ public class Room extends Rectangular {
         }
         return false;
     }
+    public boolean checkCameraIsRoomPoint(Camera camera) {
+        for(int i = 0 ; i < 8; i++) {
+            Point point = this.getPoints()[i];
+            if(camera.getX() == point.getX() && camera.getY() == point.getY() && camera.getZ() == point.getZ()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkCameraExist(Camera camera) {
+        for(int i = 0; i < this.cameras.size(); i++) {
+            Camera currentCamera = this.cameras.get(i);
+            if(camera.getX() == currentCamera.getX() && camera.getY() == currentCamera.getY()
+            && camera.getZ() == currentCamera.getZ()) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean checkCameraValid(Camera camera) {
         return camera.getX() > this.getPoints()[0].getX() && camera.getX() < this.getPoints()[1].getX() &&
         camera.getY() > this.getPoints()[0].getY() && camera.getY() < this.getPoints()[3].getY() &&
         camera.getZ() > this.getPoints()[0].getZ() && camera.getZ() < this.getPoints()[4].getZ() 
-        || camera.getZ() == this.getPoints()[0].getZ()
+        || camera.getZ() == this.getPoints()[0].getZ() || checkCameraIsRoomPoint(camera) == true || checkCameraExist(camera)
         ? false : true;
     }
     public static void main(String[] args) {

@@ -59,6 +59,11 @@ public class Rectangular {
         }
         return true;
     }
+    public boolean checkPointInRectangular(Point point) {
+        return point.getX() >= this.getPoints()[0].getX() && point.getX() <= this.getPoints()[1].getX() && 
+            point.getY() >= this.getPoints()[0].getY() && point.getY() <= this.getPoints()[3].getY() &&
+            point.getZ() >= this.getPoints()[0].getZ() && point.getZ() <= this.getPoints()[4].getZ();
+    }
     public static void main(String[] args) {
 
     }
