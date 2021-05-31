@@ -1,0 +1,3 @@
+round(randomInRange(currentRoom.getPoints()[0].getX(), currentRoom.getPoints()[1].getX()))
+round(randomInRange(currentRoom.getPoints()[0].getY(), currentRoom.getPoints()[3].getY()))
+round(randomInRange(currentRoom.getPoints()[0].getZ(), currentRoom.getPoints()[4].getZ()))

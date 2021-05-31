@@ -8,6 +8,12 @@ public class Camera extends Point {
         this.wideAngle = Integer.parseInt(cameraPoints[3]);
         this.highAngle = Integer.parseInt(cameraPoints[4]);
     }
+    public int getWideAngle() {
+        return this.wideAngle;
+    }
+    public int getHighAngle() {
+        return this.highAngle;
+    }
     public void printCamera() {
         System.out.println("Camera X:" + this.getX() + " Y: " + this.getY() + " Z: " + this.getZ() + " Wide: "
             + this.wideAngle + " High: " + this.highAngle);
