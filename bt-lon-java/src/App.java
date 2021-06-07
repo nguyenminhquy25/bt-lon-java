@@ -1,7 +1,5 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 public class App {
     private ArrayList<Room> rooms = new ArrayList<>();
@@ -48,8 +46,23 @@ public class App {
                     Room.setUpNewCameras(app);
                     break;
                 case "3":
-                    Room.calculateObscuredArea(app);
+                    switch(Room.calculateObscuredArea(app)) {
+                        case 0:
+                            System.out.println("No room exist");
+                            break;
+                        case 1:
+                            System.out.println("Point is in object");
+                            break;
+                        case 2:
+                            System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
+                            break;
+                        case 3: 
+                            System.out.println("Point is not on the object and it is not in the viewable area of ​​a cameras");
+                            break;
+                    }
                     break;
+                case "4":
+                    
                 case "7":
                     Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
                     currentRoom.printCameras();

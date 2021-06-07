@@ -204,27 +204,25 @@ public class Room extends Rectangular {
             e.printStackTrace();
         } 
     }
-    public static void calculateObscuredArea(App app) {
+    public static int calculateObscuredArea(App app) {
         if(app.getRooms().size() == 0) {
-            System.out.println("No room exist");
-            return;
+            return 0;
         }
         int key = 0;
         Point point = new Point();
         Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
-        point.setX(App.round(App.randomInRange(currentRoom.getPoints()[0].getX(), currentRoom.getPoints()[1].getX())));
-        point.setY(App.round(App.randomInRange(currentRoom.getPoints()[0].getY(), currentRoom.getPoints()[3].getY())));
-        point.setZ(App.round(App.randomInRange(currentRoom.getPoints()[0].getZ(), currentRoom.getPoints()[4].getZ())));
+        point.setX(App.round(App.randomInRange(0.00d, 2.00d)));
+        point.setY(App.round(App.randomInRange(0.00d, 2.00d)));
+        point.setZ(App.round(App.randomInRange(0.00d, 2.00d)));
         for(int i = 0; i < currentRoom.getObjects().size(); i++) {
             if(currentRoom.getObjects().get(i).checkPointInRectangular(point)) {
                 point.printPoint();
-                System.out.println("Point is in object");
                 key = 1;
                 break;
             }
         }
         if(key == 1) {
-            return;
+            return 1;
         }
         label: for(int i = 0; i < currentRoom.getCameras().size(); i++) {
             LineSegment lineSegment = new LineSegment(point, currentRoom.getCameras().get(i));
@@ -243,7 +241,6 @@ public class Room extends Rectangular {
                 if(range[1] - range[0] < 0 || range[3] - range[2] < 0 || range[5] - range[4] < 0) {
                     point.printPoint();
                     key = 2;
-                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                     break label;
                 }
                 ArrayList<Integer> countZero = new ArrayList<Integer>();
@@ -291,7 +288,6 @@ public class Room extends Rectangular {
                         else {
                             point.printPoint();
                             key = 2;
-                            System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                             break label;
                         }
                     case 1:
@@ -306,7 +302,6 @@ public class Room extends Rectangular {
                                 else {
                                     point.printPoint();
                                     key = 2;
-                                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                                     break label;
                                 }
                             case 2:
@@ -317,7 +312,6 @@ public class Room extends Rectangular {
                                 else {
                                     point.printPoint();
                                     key = 2;
-                                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                                     break label;
                                 }
                             case 3:
@@ -328,7 +322,6 @@ public class Room extends Rectangular {
                                 else {
                                     point.printPoint();
                                     key = 2;
-                                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                                     break label;
                                 }
                             }
@@ -363,7 +356,6 @@ public class Room extends Rectangular {
                                 else {
                                     point.printPoint();
                                     key = 2;
-                                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                                     break label;
                                 }
                             case 1:
@@ -391,7 +383,6 @@ public class Room extends Rectangular {
                                 else {
                                     point.printPoint();
                                     key = 2;
-                                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                                     break label;
                                 }
                             case 2:
@@ -419,14 +410,12 @@ public class Room extends Rectangular {
                                 else {
                                     point.printPoint();
                                     key = 2;
-                                    System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                                     break label;
                                 }
                         }
                         break;
                     case 0:
                         point.printPoint();
-                        System.out.println("Point is not on the object and it is in the viewable area of ​​a cameras");
                         key = 2;
                         break label;
                 }
@@ -434,8 +423,12 @@ public class Room extends Rectangular {
         }
         if(key != 2) {
             point.printPoint();
-            System.out.println("Point is not on the object and it is not in the viewable area of ​​a cameras");
+            return 3;
         }
+        return key;
+    }
+    public static void percentVisible(App app) {
+
     }
     public static void main(String[] args) {
 
