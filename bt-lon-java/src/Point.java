@@ -31,6 +31,22 @@ public class Point {
         p1.getY() >= p2.getY() && p1.getY() <= p4.getY() &&
         p1.getZ() == p2.getZ();
     }
+    public static double getRange2Point(Point p1, Point p2) {
+        return App.round(Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + (p1.getY() - p2.getY()) * (p1.getY() - p2.getY()) +
+        (p1.getZ() - p2.getZ()) * (p1.getZ() - p2.getZ())));
+    }
+    public static boolean checkPointInCameraRange(Camera camera, Point point) {
+        Point projectionXZ = new Point();
+        Point projectionXY = new Point();
+        projectionXZ.setX(point.getX());
+        projectionXZ.setY(camera.getY());
+        projectionXZ.setZ(point.getZ());
+        projectionXY.setX(point.getX());
+        projectionXY.setY(point.getY());
+        projectionXY.setZ(camera.getZ());
+        return App.round(Point.getRange2Point(projectionXZ, point) / Point.getRange2Point(camera, projectionXZ)) <= Math.tan(camera.getWideAngle() / 2)
+        && App.round(Point.getRange2Point(projectionXY, point) / Point.getRange2Point(camera, projectionXY)) <= Math.tan(camera.getHighAngle() / 2);
+    }
     public static void main(String[] args) {
         
     }
