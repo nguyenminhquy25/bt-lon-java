@@ -1,3 +1,190 @@
-round(randomInRange(currentRoom.getPoints()[0].getX(), currentRoom.getPoints()[1].getX()))
-round(randomInRange(currentRoom.getPoints()[0].getY(), currentRoom.getPoints()[3].getY()))
-round(randomInRange(currentRoom.getPoints()[0].getZ(), currentRoom.getPoints()[4].getZ()))
+// 1 co the thay 0 k the thay
+                    int key = 0;
+                    Point point = new Point();
+                    Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
+                    point.setX(x);
+                    point.setY(y);
+                    point.setZ(z);
+                    label: for(int i = 0; i < currentRoom.getCameras().size(); i++) {
+                        LineSegment lineSegment = new LineSegment(point, currentRoom.getCameras().get(i));
+                        if(!checkPointInCameraRange(currentRoom.getCameras().get(i), point)) {
+                            continue;
+                        }
+                        for(int j = 0; j < currentRoom.getObjects().size(); j++) {
+                            double[] range = new double[6];
+                            Object currentObject = currentRoom.getObjects().get(j);
+                            range[1] = Math.min(lineSegment.getRange()[1], currentObject.getPoints()[1].getX());
+                            range[0] = Math.max(lineSegment.getRange()[0], currentObject.getPoints()[0].getX());
+                            range[3] = Math.min(lineSegment.getRange()[3], currentObject.getPoints()[3].getY());
+                            range[2] = Math.max(lineSegment.getRange()[2], currentObject.getPoints()[0].getY());
+                            range[5] = Math.min(lineSegment.getRange()[5], currentObject.getPoints()[4].getZ());
+                            range[4] = Math.max(lineSegment.getRange()[4], currentObject.getPoints()[0].getZ());
+                            if(range[1] - range[0] < 0 || range[3] - range[2] < 0 || range[5] - range[4] < 0) {
+                                return 1;
+                            }
+                            ArrayList<Integer> countZero = new ArrayList<Integer>();
+                            ArrayList<Integer> countNotZero = new ArrayList<Integer>();
+                            for(int u = 0; u < 3; u++) {
+                                if(lineSegment.getDirectionVector()[u] != 0.00d) {
+                                    countNotZero.add(u);
+                                }
+                                else {
+                                    countZero.add(u);
+                                }
+                            }
+                            switch(countNotZero.size()) {
+                                case 3:
+                                    double[] rangeY = new double[2];
+                                    double[] rangeZ = new double[2];
+                                    double rangeMin = (range[0] - lineSegment.getPoint()[0]) / lineSegment.getDirectionVector()[0];
+                                    double rangeMax = (range[1] - lineSegment.getPoint()[0]) / lineSegment.getDirectionVector()[0];
+                                    if(lineSegment.getDirectionVector()[0] < 0) {
+                                        double temp = rangeMin;
+                                        rangeMin = rangeMax;
+                                        rangeMax = temp;
+                                    }
+                                    rangeY[0] = round(rangeMin *  lineSegment.getDirectionVector()[1] + lineSegment.getPoint()[1]);
+                                    rangeY[1] = round(rangeMax *  lineSegment.getDirectionVector()[1] + lineSegment.getPoint()[1]);
+                                    if(lineSegment.getDirectionVector()[1] < 0) {
+                                        double temp = rangeY[0];
+                                        rangeY[0] = rangeY[1];
+                                        rangeY[1] = temp;
+                                    }
+                                    rangeZ[0] = round(rangeMin *  lineSegment.getDirectionVector()[2] + lineSegment.getPoint()[2]);
+                                    rangeZ[1] = round(rangeMax *  lineSegment.getDirectionVector()[2] + lineSegment.getPoint()[2]);
+                                    if(lineSegment.getDirectionVector()[2] < 0) {
+                                        double temp = rangeZ[0];
+                                        rangeZ[0] = rangeZ[1];
+                                        rangeZ[1] = temp;
+                                    }
+                                    rangeY[0] = Math.max(rangeY[0], range[2]);
+                                    rangeY[1] = Math.min(rangeY[1], range[3]);
+                                    rangeZ[0] = Math.max(rangeZ[0], range[4]);
+                                    rangeZ[1] = Math.min(rangeZ[0], range[5]);
+                                    if(rangeY[1] - rangeY[0] >= 0 && rangeZ[1] - rangeZ[0] >= 0) {
+                                        continue;
+                                    }
+                                    else {
+                                        return 1;
+                                    }
+                                case 1:
+                                    int zero1 = countZero.get(0);
+                                    int zero2 = countZero.get(1);
+                                    switch(zero1 + zero2) {
+                                        case 1:
+                                            if(lineSegment.getPoint()[0] >= range[0] && lineSegment.getPoint()[0] <= range[1] &&
+                                            lineSegment.getPoint()[1] >= range[2] && lineSegment.getPoint()[1] <= range[3]) {
+                                                continue;
+                                            } 
+                                            else {
+                                                return 1;
+                                            }
+                                        case 2:
+                                            if(lineSegment.getPoint()[0] >= range[0] && lineSegment.getPoint()[0] <= range[1] &&
+                                            lineSegment.getPoint()[2] >= range[4] && lineSegment.getPoint()[2] <= range[5]) {
+                                                continue;
+                                            } 
+                                            else {
+                                                return 1;
+                                            }
+                                        case 3:
+                                            if(lineSegment.getPoint()[1] >= range[2] && lineSegment.getPoint()[1] <= range[3] &&
+                                            lineSegment.getPoint()[2] >= range[4] && lineSegment.getPoint()[2] <= range[5]) {
+                                                continue;
+                                            } 
+                                            else {
+                                                return 1;
+                                            }
+                                        }
+                                    break;
+                                case 2:
+                                    int nonZero1 = countNotZero.get(0);
+                                    int nonZero2 = countNotZero.get(1);
+                                    int zero = countZero.get(0);
+                                    switch(zero) {
+                                        case 0:
+                                            double miniRangeMin0 = (range[2] - lineSegment.getPoint()[1]) 
+                                            / lineSegment.getDirectionVector()[1];
+                                            double miniRangeMax0 = (range[3] - lineSegment.getPoint()[1])
+                                            / lineSegment.getDirectionVector()[1];
+                                            if(lineSegment.getDirectionVector()[1] < 0) {
+                                                double temp = miniRangeMin0;
+                                                miniRangeMin0 = miniRangeMax0;
+                                                miniRangeMax0 = temp;
+                                            }
+                                            double left0 = Math.max(round(miniRangeMin0 * lineSegment.getDirectionVector()[2] 
+                                            + lineSegment.getPoint()[2]), range[4]);
+                                            double right0 = Math.min(round(miniRangeMax0 * lineSegment.getDirectionVector()[2] 
+                                            + lineSegment.getPoint()[2]), range[5]);
+                                            if(lineSegment.getDirectionVector()[2] < 0) {
+                                                double temp = left0;
+                                                left0 = right0;
+                                                right0 = temp;
+                                            }
+                                            if(right0 - left0 >= 0) {
+                                                continue;
+                                            }
+                                            else {
+                                                return 1;
+                                            }
+                                        case 1:
+                                            double miniRangeMin1 = (range[0] - lineSegment.getPoint()[0]) 
+                                            / lineSegment.getDirectionVector()[0];
+                                            double miniRangeMax1 = (range[1] - lineSegment.getPoint()[0])
+                                            / lineSegment.getDirectionVector()[0];
+                                            if(lineSegment.getDirectionVector()[0] < 0) {
+                                                double temp = miniRangeMin1;
+                                                miniRangeMin1 = miniRangeMax1;
+                                                miniRangeMax1 = temp;
+                                            }
+                                            double left1 = Math.max(round(miniRangeMin1 * lineSegment.getDirectionVector()[2] 
+                                            + lineSegment.getPoint()[2]), range[4]);
+                                            double right1 = Math.min(round(miniRangeMax1 * lineSegment.getDirectionVector()[2] 
+                                            + lineSegment.getPoint()[2]), range[5]);
+                                            if(lineSegment.getDirectionVector()[2] < 0) {
+                                                double temp = left1;
+                                                left1 = right1;
+                                                right1 = temp;
+                                            }
+                                            if(right1 - left1 >= 0) {
+                                                continue;
+                                            }
+                                            else {
+                                                return 1;
+                                            }
+                                        case 2:
+                                            double miniRangeMin2 = (range[0] - lineSegment.getPoint()[0]) 
+                                            / lineSegment.getDirectionVector()[0];
+                                            double miniRangeMax2 = (range[1] - lineSegment.getPoint()[0])
+                                            / lineSegment.getDirectionVector()[0];
+                                            if(lineSegment.getDirectionVector()[0] < 0) {
+                                                double temp = miniRangeMin2;
+                                                miniRangeMin2 = miniRangeMax2;
+                                                miniRangeMax2 = temp;
+                                            }
+                                            double left2 = Math.max(round(miniRangeMin2 * lineSegment.getDirectionVector()[1] 
+                                            + lineSegment.getPoint()[1]), range[2]);
+                                            double right2 = Math.min(round(miniRangeMax2 * lineSegment.getDirectionVector()[1] 
+                                            + lineSegment.getPoint()[1]), range[3]);
+                                            if(lineSegment.getDirectionVector()[1] < 0) {
+                                                double temp = left2;
+                                                left2 = right2;
+                                                right2 = temp;
+                                            }
+                                            if(right2 - left2 >= 0) {
+                                                continue;
+                                            }
+                                            else {
+                                                return 1;
+                                            }
+                                    }
+                                    break;
+                                case 0:
+                                    return 1;
+                            }
+                        }
+                    }
+                    if(key != 2) {
+                        return 0;
+                    }
+                    break;

@@ -133,9 +133,9 @@ public class App {
                     int key = 0;
                     Point point = new Point();
                     Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
-                    point.setX(1.80d);
-                    point.setY(0.50d);
-                    point.setZ(0.50d);
+                    point.setX(round(randomInRange(currentRoom.getPoints()[0].getX(), currentRoom.getPoints()[1].getX())));
+                    point.setY(round(randomInRange(currentRoom.getPoints()[0].getY(), currentRoom.getPoints()[3].getY())));
+                    point.setZ(round(randomInRange(currentRoom.getPoints()[0].getZ(), currentRoom.getPoints()[4].getZ())));
                     for(int i = 0; i < currentRoom.getObjects().size(); i++) {
                         if(currentRoom.getObjects().get(i).checkPointInRectangular(point)) {
                             point.printPoint();
