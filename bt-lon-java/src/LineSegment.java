@@ -1,3 +1,5 @@
+
+
 public class LineSegment {
     private double[] directionVector = new double[3];
     private double[] range = new double[6];
