@@ -204,44 +204,48 @@ public class Room extends Rectangular {
             e.printStackTrace();
         } 
     }
-    public static int calculateObscuredArea(App app) {
-        if(app.getRooms().size() == 0) {
+    public static int calculateObscuredArea(App app, double x, double y, double z, int print) {
+        if(app.getRooms().size() == 0) {// check có room nào chưa
             return 0;
         }
-        int key = 0;
         Point point = new Point();
         Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
-        point.setX(App.round(App.randomInRange(0.00d, 2.00d)));
-        point.setY(App.round(App.randomInRange(0.00d, 2.00d)));
-        point.setZ(App.round(App.randomInRange(0.00d, 2.00d)));
-        for(int i = 0; i < currentRoom.getObjects().size(); i++) {
+        point.setX(App.round(x));
+        point.setY(App.round(y));
+        point.setZ(App.round(z));//set tọa độ
+        for(int i = 0; i < currentRoom.getObjects().size(); i++) {//check điểm có nằm trong object k
             if(currentRoom.getObjects().get(i).checkPointInRectangular(point)) {
-                point.printPoint();
-                key = 1;
-                break;
+                if(print == 1) {
+                    point.printPoint();
+                }
+                return 1;
             }
         }
-        if(key == 1) {
-            return 1;
-        }
-        label: for(int i = 0; i < currentRoom.getCameras().size(); i++) {
+        int cameraUnvisible = 0;
+        label: for(int i = 0; i < currentRoom.getCameras().size(); i++) {// loop qua all cam
+            int count = 0;
             LineSegment lineSegment = new LineSegment(point, currentRoom.getCameras().get(i));
             if(!Point.checkPointInCameraRange(currentRoom.getCameras().get(i), point)) {
+                cameraUnvisible++;
                 continue;
             }
-            for(int j = 0; j < currentRoom.getObjects().size(); j++) {
+            for(int j = 0; j < currentRoom.getObjects().size(); j++) {//loop qua all obj
                 double[] range = new double[6];
                 Object currentObject = currentRoom.getObjects().get(j);
-                range[1] = Math.min(lineSegment.getRange()[1], currentObject.getPoints()[1].getX());
+                range[1] = Math.min(lineSegment.getRange()[1], currentObject.getPoints()[1].getX());// có khoảng giao nhau giữa đt và obj
                 range[0] = Math.max(lineSegment.getRange()[0], currentObject.getPoints()[0].getX());
                 range[3] = Math.min(lineSegment.getRange()[3], currentObject.getPoints()[3].getY());
                 range[2] = Math.max(lineSegment.getRange()[2], currentObject.getPoints()[0].getY());
                 range[5] = Math.min(lineSegment.getRange()[5], currentObject.getPoints()[4].getZ());
                 range[4] = Math.max(lineSegment.getRange()[4], currentObject.getPoints()[0].getZ());
                 if(range[1] - range[0] < 0 || range[3] - range[2] < 0 || range[5] - range[4] < 0) {
-                    point.printPoint();
-                    key = 2;
-                    break label;
+                    // if(print == 1) {
+                    //     point.printPoint();
+                    // }
+                    // key = 2;
+                    // break label;
+                    count++;
+                    continue;
                 }
                 ArrayList<Integer> countZero = new ArrayList<Integer>();
                 ArrayList<Integer> countNotZero = new ArrayList<Integer>();
@@ -253,7 +257,7 @@ public class Room extends Rectangular {
                         countZero.add(u);
                     }
                 }
-                switch(countNotZero.size()) {
+                switch(countNotZero.size()) {// chia số số trong vto chỉ phương =0
                     case 3:
                         double[] rangeY = new double[2];
                         double[] rangeZ = new double[2];
@@ -283,12 +287,18 @@ public class Room extends Rectangular {
                         rangeZ[0] = Math.max(rangeZ[0], range[4]);
                         rangeZ[1] = Math.min(rangeZ[0], range[5]);
                         if(rangeY[1] - rangeY[0] >= 0 && rangeZ[1] - rangeZ[0] >= 0) {
-                            continue;
+                            // continue;
+                            cameraUnvisible++;
+                            continue label;
                         }
                         else {
-                            point.printPoint();
-                            key = 2;
-                            break label;
+                            // if(print == 1) {
+                            //     point.printPoint();
+                            // }
+                            // key = 2;
+                            // break label;
+                            count++;
+                            continue;
                         }
                     case 1:
                         int zero1 = countZero.get(0);
@@ -297,32 +307,50 @@ public class Room extends Rectangular {
                             case 1:
                                 if(lineSegment.getPoint()[0] >= range[0] && lineSegment.getPoint()[0] <= range[1] &&
                                 lineSegment.getPoint()[1] >= range[2] && lineSegment.getPoint()[1] <= range[3]) {
-                                    continue;
+                                    cameraUnvisible++;
+                                    // continue;
+                                    continue label;
                                 } 
                                 else {
-                                    point.printPoint();
-                                    key = 2;
-                                    break label;
+                                    // if(print == 1) {
+                                    //     point.printPoint();
+                                    // }
+                                    // key = 2;
+                                    // break label;
+                                    count++;
+                                    continue;
                                 }
                             case 2:
                                 if(lineSegment.getPoint()[0] >= range[0] && lineSegment.getPoint()[0] <= range[1] &&
                                 lineSegment.getPoint()[2] >= range[4] && lineSegment.getPoint()[2] <= range[5]) {
-                                    continue;
+                                    // continue;
+                                    cameraUnvisible++;
+                                    continue label;
                                 } 
                                 else {
-                                    point.printPoint();
-                                    key = 2;
-                                    break label;
+                                    // if(print == 1) {
+                                    //     point.printPoint();
+                                    // }
+                                    // key = 2;
+                                    // break label;
+                                    count++;
+                                    continue;
                                 }
                             case 3:
                                 if(lineSegment.getPoint()[1] >= range[2] && lineSegment.getPoint()[1] <= range[3] &&
                                 lineSegment.getPoint()[2] >= range[4] && lineSegment.getPoint()[2] <= range[5]) {
-                                    continue;
+                                    // continue;
+                                    cameraUnvisible++;
+                                    continue label;
                                 } 
                                 else {
-                                    point.printPoint();
-                                    key = 2;
-                                    break label;
+                                    // if(print == 1) {
+                                    //     point.printPoint();
+                                    // }
+                                    // key = 2;
+                                    // break label;
+                                    count++;
+                                    continue;
                                 }
                             }
                         break;
@@ -351,12 +379,18 @@ public class Room extends Rectangular {
                                     right0 = temp;
                                 }
                                 if(right0 - left0 >= 0) {
-                                    continue;
+                                    // continue;
+                                    cameraUnvisible++;
+                                    continue label;
                                 }
                                 else {
-                                    point.printPoint();
-                                    key = 2;
-                                    break label;
+                                    // if(print == 1) {
+                                    //     point.printPoint();
+                                    // }
+                                    // key = 2;
+                                    // break label;
+                                    count++;
+                                    continue;
                                 }
                             case 1:
                                 double miniRangeMin1 = (range[0] - lineSegment.getPoint()[0]) 
@@ -378,12 +412,18 @@ public class Room extends Rectangular {
                                     right1 = temp;
                                 }
                                 if(right1 - left1 >= 0) {
-                                    continue;
+                                    // continue;
+                                    cameraUnvisible++;
+                                    continue label;
                                 }
                                 else {
-                                    point.printPoint();
-                                    key = 2;
-                                    break label;
+                                    // if(print == 1) {
+                                    //     point.printPoint();
+                                    // }
+                                    // key = 2;
+                                    // break label;
+                                    count++;
+                                    continue;
                                 }
                             case 2:
                                 double miniRangeMin2 = (range[0] - lineSegment.getPoint()[0]) 
@@ -405,30 +445,77 @@ public class Room extends Rectangular {
                                     right2 = temp;
                                 }
                                 if(right2 - left2 >= 0) {
-                                    continue;
+                                    // continue;
+                                    cameraUnvisible++;
+                                    continue label;
                                 }
                                 else {
-                                    point.printPoint();
-                                    key = 2;
-                                    break label;
+                                    // if(print == 1) {
+                                    //     point.printPoint();
+                                    // }
+                                    // key = 2;
+                                    // break label;
+                                    count++;
+                                    continue;
                                 }
                         }
                         break;
                     case 0:
-                        point.printPoint();
-                        key = 2;
-                        break label;
+                        if(print == 1) {
+                            point.printPoint();
+                        }
+                        return 2;
+                }
+            }
+            if(count == currentRoom.getObjects().size()) {
+                if(print == 1) {
+                    point.printPoint();
+                }
+                return 2;
+            }
+            else {
+                if(print == 1) {
+                    point.printPoint();
+                }
+                return 3;
+            }
+        }
+        if(cameraUnvisible == currentRoom.getCameras().size()) {
+            if(print == 1) {
+                point.printPoint();
+            }
+            return 3;
+        }
+        else {
+            if(print == 1) {
+                point.printPoint();
+            }
+            return 2;
+        }
+    }
+    public static void percentVisible(App app) {
+        double visible = 0.00d;
+        int unvisible = 0;
+        Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
+        for(double i = currentRoom.getPoints()[0].getX(); i <= currentRoom.getPoints()[1].getX(); i += 0.1) {
+            for(double j = currentRoom.getPoints()[0].getY(); j <= currentRoom.getPoints()[3].getY(); j += 0.1) {
+                for(double u = currentRoom.getPoints()[0].getZ(); u <= currentRoom.getPoints()[4].getZ(); u += 0.1) {
+                    switch(Room.calculateObscuredArea(app, App.round(i), App.round(j), App.round(u), 0)) {
+                        case 2:
+                            System.out.print(i);
+                            System.out.print("          ");
+                            System.out.print(j);
+                            System.out.print("          ");
+                            System.out.print(u);
+                            System.out.println("");
+                            break;
+                        case 3:
+                            unvisible++;
+                            break;
+                    }
                 }
             }
         }
-        if(key != 2) {
-            point.printPoint();
-            return 3;
-        }
-        return key;
-    }
-    public static void percentVisible(App app) {
-
     }
     public static void main(String[] args) {
 
