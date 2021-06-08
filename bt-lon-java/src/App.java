@@ -46,8 +46,8 @@ public class App {
                     Room.setUpNewCameras(app);
                     break;
                 case "3":
-                    switch(Room.calculateObscuredArea(app, 0.25, 
-                        0.5, 0.6, 1)) {
+                    switch(Room.calculateObscuredArea(app, App.randomInRange(0.00d, 2.00d), 
+                        App.randomInRange(0.00d, 2.00d), App.randomInRange(0.00d, 2.00d), 1)) {
                         case 0:
                             System.out.println("No room exist");
                             break;

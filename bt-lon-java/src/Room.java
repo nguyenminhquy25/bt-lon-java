@@ -225,7 +225,7 @@ public class Room extends Rectangular {
         label: for(int i = 0; i < currentRoom.getCameras().size(); i++) {// loop qua all cam
             int count = 0;
             LineSegment lineSegment = new LineSegment(point, currentRoom.getCameras().get(i));
-            if(!Point.checkPointInCameraRange(currentRoom.getCameras().get(i), point)) {
+            if(!Point.checkPointInCameraRange(currentRoom.getCameras().get(i), point, currentRoom)) {
                 cameraUnvisible++;
                 continue;
             }
@@ -502,12 +502,7 @@ public class Room extends Rectangular {
                 for(double u = currentRoom.getPoints()[0].getZ(); u <= currentRoom.getPoints()[4].getZ(); u += 0.1) {
                     switch(Room.calculateObscuredArea(app, App.round(i), App.round(j), App.round(u), 0)) {
                         case 2:
-                            System.out.print(i);
-                            System.out.print("          ");
-                            System.out.print(j);
-                            System.out.print("          ");
-                            System.out.print(u);
-                            System.out.println("");
+                            visible++;
                             break;
                         case 3:
                             unvisible++;
@@ -516,6 +511,8 @@ public class Room extends Rectangular {
                 }
             }
         }
+        System.out.println(visible);
+        System.out.println(unvisible);
     }
     public static void main(String[] args) {
 
