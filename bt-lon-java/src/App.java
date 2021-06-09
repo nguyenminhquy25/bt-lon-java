@@ -46,8 +46,8 @@ public class App {
                     Room.setUpNewCameras(app);
                     break;
                 case "3":
-                    switch(Room.calculateObscuredArea(app, 0.20d, 
-                        0.60d,  0.50d , 1)) {
+                    switch(Room.calculateObscuredArea(app, 1.51d, 
+                        0.5d,  0.25d , 1)) {
                         case 0:
                             System.out.println("No room exist");
                             break;
@@ -63,7 +63,7 @@ public class App {
                     }
                     break;
                 case "4":
-                    Room.percentVisible(app);
+                    System.out.println(Room.percentVisible(app));
                     break;
                 case "7":
                     Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);

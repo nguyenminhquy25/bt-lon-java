@@ -64,6 +64,43 @@ public class Rectangular {
             point.getY() >= this.getPoints()[0].getY() && point.getY() <= this.getPoints()[3].getY() &&
             point.getZ() >= this.getPoints()[0].getZ() && point.getZ() <= this.getPoints()[4].getZ();
     }
+    public double getMaxX() {
+		double x = 0;
+		for (int i = 0; i < 7; i++) {
+
+			if (x < points[i].getX()) {
+				x = points[i].getX();
+
+			}
+		}
+
+		return x;
+	}
+
+	public double getMaxY() {
+		double y = 0;
+		for (int i = 0; i < 7; i++) {
+
+			if (y < points[i].getY()) {
+				y = points[i].getY();
+
+			}
+		}
+
+		return y;
+	}
+
+	public double getMaxZ() {
+		double z = 0;
+		for (int i = 0; i < 7; i++) {
+
+			if (z < points[i].getZ()) {
+				z = points[i].getZ();
+
+			}
+		}
+		return z;
+	}
     public static void main(String[] args) {
 
     }

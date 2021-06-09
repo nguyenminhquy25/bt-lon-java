@@ -157,6 +157,11 @@ public class Room extends Rectangular {
             }
             app.getRooms().add(room);
             int numberObject = reader.nextInt();
+            if(!reader.hasNextLine()) {
+                System.out.println("New room was created");
+                reader.close();
+                return;
+            }
             reader.nextLine(); 
             for(int i = 0; i < numberObject; i++) {
                 String objectPoints = reader.nextLine();
@@ -185,6 +190,11 @@ public class Room extends Rectangular {
             File obj = new File("./src/cameraInput.txt");
             Scanner reader = new Scanner(obj);
             int numberCamera = reader.nextInt();
+            if(!reader.hasNextLine()) {
+                System.out.println("No camera was added");
+                reader.close();
+                return;
+            }
             reader.nextLine();
             for(int i = 0; i < numberCamera; i++) {
                 String cameraPoints = reader.nextLine();
@@ -493,7 +503,7 @@ public class Room extends Rectangular {
             return 2;
         }
     }
-    public static void percentVisible(App app) {
+    public static double percentVisible(App app) {
         double visible = 0.00d;
         int unvisible = 0;
         Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
@@ -511,7 +521,13 @@ public class Room extends Rectangular {
                 }
             }
         }
-        System.out.println(App.round(visible / (visible + unvisible) * 100) + "%");
+        return App.round(visible / (visible + unvisible) * 100);
+    }
+    public static double visible(App app) {
+        Room currentRoom = app.getRooms().get(app.getRooms().size() - 1);
+        return percentVisible(app) * (currentRoom.getPoints()[1].getX() - currentRoom.getPoints()[0].getX()) 
+        * (currentRoom.getPoints()[3].getY() - currentRoom.getPoints()[0].getY())
+        * (currentRoom.getPoints()[4].getZ() - currentRoom.getPoints()[0].getZ());
     }
     public static void main(String[] args) {
 

@@ -36,43 +36,56 @@ public class Point {
         (p1.getZ() - p2.getZ()) * (p1.getZ() - p2.getZ())));
     }
     public static boolean checkPointInCameraRange(Camera camera, Point point, Room room) {
-        if(camera.getX() == room.getPoints()[0].getX() || camera.getX() == room.getPoints()[1].getX()) {
-            Point projectionXZ = new Point();
-            Point projectionXY = new Point();
-            projectionXZ.setX(point.getX());
-            projectionXZ.setY(camera.getY());
-            projectionXZ.setZ(point.getZ());
-            projectionXY.setX(point.getX());
-            projectionXY.setY(point.getY());
-            projectionXY.setZ(camera.getZ());
-            return App.round(Point.getRange2Point(projectionXZ, point) / Point.getRange2Point(camera, projectionXZ)) <= Math.tan(Math.toRadians(camera.getWideAngle() / 2))
-            && App.round(Point.getRange2Point(projectionXY, point) / Point.getRange2Point(camera, projectionXY)) <= Math.tan(Math.toRadians(camera.getHighAngle() / 2));
-        }
-        else if(camera.getZ() == room.getPoints()[4].getZ()) {
-            Point projectionYZ = new Point();
-            Point projectionXZ = new Point();
-            projectionXZ.setX(point.getX());
-            projectionXZ.setY(camera.getY());
-            projectionXZ.setZ(point.getZ());
-            projectionYZ.setX(camera.getX());
-            projectionYZ.setY(point.getY());
-            projectionYZ.setZ(point.getZ());
-            return App.round(Point.getRange2Point(projectionXZ, point) / Point.getRange2Point(camera, projectionXZ)) <= Math.tan(Math.toRadians(camera.getWideAngle() / 2))
-            && App.round(Point.getRange2Point(projectionYZ, point) / Point.getRange2Point(camera, projectionYZ)) <= Math.tan(Math.toRadians(camera.getHighAngle() / 2));
-        }
-        else {
-            Point projectionYZ = new Point();
-            Point projectionXY = new Point();
-            projectionYZ.setX(camera.getX());
-            projectionYZ.setY(point.getY());
-            projectionYZ.setZ(point.getZ());
-            projectionXY.setX(point.getX());
-            projectionXY.setY(point.getY());
-            projectionXY.setZ(camera.getZ());
-            return App.round(Point.getRange2Point(projectionXY, point) / Point.getRange2Point(camera, projectionXY)) <= Math.tan(Math.toRadians(camera.getWideAngle() / 2))
-            && App.round(Point.getRange2Point(projectionYZ, point) / Point.getRange2Point(camera, projectionYZ)) <= Math.tan(Math.toRadians(camera.getHighAngle() / 2));
-        }
-    }
+		Point projectionXZ = new Point();
+		Point projectionXY = new Point();
+		Point O = new Point();
+		if (camera.getX() == 0 || camera.getX() == room.getMaxX()) {
+			projectionXZ.setX(point.getX());
+			projectionXZ.setY(camera.getY());
+			projectionXZ.setZ(point.getZ());
+			projectionXY.setX(point.getX());
+			projectionXY.setY(point.getY());
+			projectionXY.setZ(camera.getZ());
+			O.setX(point.getX());
+			O.setY(camera.getY());
+			O.setZ(camera.getZ());
+			return App.round(Point.getRange2Point(projectionXZ, O) / Point.getRange2Point(O, camera)) <= Math
+					.abs(Math.tan(Math.PI * (camera.getWideAngle()/2) / 180))
+					&& App.round(Point.getRange2Point(projectionXY, O) / Point.getRange2Point(O, camera)) <= Math
+					.abs(Math.tan(Math.PI * (camera.getHighAngle()/2) / 180));
+		}
+		else if (camera.getY() == 0 || camera.getY() == room.getMaxY()) {
+			projectionXZ.setX(point.getX());
+			projectionXZ.setY(point.getY());
+			projectionXZ.setZ(camera.getZ());
+			projectionXY.setX(camera.getX());
+			projectionXY.setY(point.getY());
+			projectionXY.setZ(point.getZ());
+			O.setX(camera.getX());
+			O.setY(point.getY());
+			O.setZ(camera.getZ());
+			return App.round(Point.getRange2Point(projectionXZ, O) / Point.getRange2Point(O, camera)) <= Math
+					.abs(Math.tan(Math.PI * (camera.getWideAngle()/2) / 180))
+					&& App.round(Point.getRange2Point(projectionXY, O) / Point.getRange2Point(O, camera)) <= Math
+					.abs(Math.tan(Math.PI * (camera.getHighAngle()/2) / 180));
+		}
+		else if (camera.getZ() ==  room.getMaxZ()) {
+			projectionXZ.setX(point.getX());
+			projectionXZ.setY(camera.getY());
+			projectionXZ.setZ(point.getZ());
+			projectionXY.setX(camera.getX());
+			projectionXY.setY(point.getY());
+			projectionXY.setZ(point.getZ());
+			O.setX(camera.getX());
+			O.setY(camera.getY());
+			O.setZ(point.getZ());
+			return App.round(Point.getRange2Point(projectionXZ, O) / Point.getRange2Point(O, camera)) <= Math
+					.abs(Math.tan(Math.PI * (camera.getWideAngle()/2) / 180))
+					&& App.round(Point.getRange2Point(projectionXY, O) / Point.getRange2Point(O, camera)) <= Math
+					.abs(Math.tan(Math.PI * (camera.getHighAngle()/2) / 180));
+		}
+		return false;
+	}
     public static void main(String[] args) {
         
     }
